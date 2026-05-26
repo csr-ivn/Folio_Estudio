@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folio Estudio — Interiorismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f4;--bg2:#eeece9;--bg3:#e4e2de;--border:#d0cdc8;--border2:#b8b5b0;
+  --text:#1c1b19;--text2:#4a4845;--text3:#7a7774;--accent:#3a3835;--accent2:#6b6864;
+  --success:#2e6b3e;--success-bg:#e8f3ec;--warn:#7a5c1e;--warn-bg:#fdf3e0;
+  --info:#1e4d7a;--info-bg:#e6f0fa;--radius:6px;--radius-lg:10px;
+}
+[data-theme="dark"]{
+  --bg:#151412;--bg2:#1e1c1a;--bg3:#272420;--border:#3a3733;--border2:#524f4a;
+  --text:#ede9e4;--text2:#b0aca6;--text3:#706c67;--accent:#d4cfc9;--accent2:#908c86;
+  --success:#6abf82;--success-bg:#0f2a18;--warn:#d4a040;--warn-bg:#1f1608;
+  --info:#6aabdc;--info-bg:#071828;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;transition:background 0.2s,color 0.2s;min-height:100vh;}
+.page{max-width:980px;margin:0 auto;padding:2rem 1.25rem 4rem;}
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;gap:1rem;}
+.header-eyebrow{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);font-weight:400;margin-bottom:4px;}
+.header-title{font-size:24px;font-weight:600;color:var(--text);line-height:1.2;letter-spacing:-0.01em;}
+.header-sub{font-size:13px;color:var(--text3);margin-top:4px;font-style:italic;font-weight:300;}
+.theme-toggle{position:fixed;top:1.25rem;right:1.25rem;z-index:100;background:var(--bg2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.15s,border-color 0.15s;padding:0;flex-shrink:0;}
+.theme-toggle:hover{background:var(--bg3);border-color:var(--border2);}
+.toggle-icon{display:flex;align-items:center;justify-content:center;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;justify-content:center;}
+.filter-btn{font-family:'Source Serif 4',serif;font-size:12px;font-weight:400;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;letter-spacing:0.01em;}
+.filter-btn:hover{border-color:var(--border2);color:var(--text);}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+.filter-section{display:none;}
+.filter-section.active{display:block;}
+.table-wrap{width:100%;overflow-x:auto;margin-bottom:0.5rem;}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:480px;}
+thead th{font-family:'Source Serif 4',serif;font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:center;padding:8px 10px;border-bottom:1px solid var(--border);}
+thead th:first-child{text-align:left;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--bg2);}
+td{padding:9px 10px;vertical-align:top;text-align:center;}
+td:first-child{text-align:left;}
+.svc-name{font-weight:600;font-size:13px;color:var(--text);margin-bottom:2px;}
+.svc-sub{font-size:11px;color:var(--text3);font-style:italic;line-height:1.4;}
+.note-txt{font-size:11px;color:var(--text3);line-height:1.5;font-style:italic;text-align:left;}
+.price-type{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;margin-top:8px;}
+.price-type:first-child{margin-top:0;}
+.price-main{font-weight:600;font-size:12px;color:var(--text);white-space:nowrap;}
+.price-note{font-size:10px;color:var(--text3);margin-top:1px;font-style:italic;}
+.sub-heading{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:1.75rem 0 0.75rem;}
+.sub-note{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:0.75rem;}
+.toggle-tbl-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Source Serif 4',serif;font-size:12px;color:var(--text2);border:1px solid var(--border);border-radius:20px;padding:5px 14px;cursor:pointer;background:transparent;margin-bottom:1rem;transition:all 0.15s;letter-spacing:0.01em;}
+.toggle-tbl-btn:hover{border-color:var(--border2);color:var(--text);}
+.collapsible-tbl{display:none;}
+.collapsible-tbl.open{display:block;}
+.calc-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.75rem;}
+.calc-title{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:1.1rem;}
+.calc-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.calc-label{font-size:13px;color:var(--text2);min-width:200px;font-style:italic;}
+.calc-input,.calc-select{font-family:'Source Serif 4',serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;transition:border-color 0.15s;-webkit-appearance:none;}
+.calc-input{width:110px;}
+.calc-select{flex:1;min-width:200px;max-width:340px;}
+.calc-input:focus,.calc-select:focus{outline:none;border-color:var(--border2);}
+.results-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:1.1rem;}
+.res-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;flex:1;min-width:130px;}
+.res-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:5px;}
+.res-value{font-size:17px;font-weight:600;color:var(--text);}
+.res-value.highlight{color:var(--success);}
+.calc-warn{font-size:11px;color:var(--warn);margin-top:8px;font-style:italic;}
+.footer-note{margin-top:2.5rem;padding:1rem 1.25rem;border-left:2px solid var(--border2);font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;}
+@media(max-width:600px){.header{flex-direction:column;}.calc-label{min-width:100%;}.calc-select{max-width:100%;}}
+@media(max-width:480px){table{min-width:400px;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-eyebrow">Folio Estudio</div>
+    <div class="header-title">Interiorismo</div>
+    <div class="header-sub">Ciudad de México — 2026</div>
+  </div>
+</div>
+
+<button class="theme-toggle" id="theme-btn" aria-label="Cambiar tema">
+  <span class="toggle-icon">
+    <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+      <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+      <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2);display:none;">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+    </svg>
+  </span>
+</button>
+
+<hr class="section-divider">
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-fs="int">Interiores</button>
+  <button class="filter-btn" data-fs="arq">Arquitectónico</button>
+  <button class="filter-btn" data-fs="ing">Ingenierías</button>
+  <button class="filter-btn" data-fs="ext">Extras</button>
+</div>
+
+<!-- ══ INTERIORES ══ -->
+<div class="filter-section active" id="fs-int">
+
+  <div class="calc-card">
+    <div class="calc-title">Calculadora — Interiores</div>
+    <div class="calc-row">
+      <span class="calc-label">Tipo de proyecto</span>
+      <select class="calc-select" id="int-tipo" onchange="onIntTipo();calcInt()">
+        <option value="vv">V. Vertical (máx. 70 m²)</option>
+        <option value="vh">V. Horizontal (máx. 150 m²)</option>
+        <option value="cc">Com. Chico (máx. 70 m²)</option>
+        <option value="cm">Com. Mediano (máx. 250 m²)</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Superficie (m²)</span>
+      <input type="number" class="calc-input" id="int-m2" value="70" min="1" max="1000" step="0.01" oninput="calcInt()">
+    </div>
+    <div class="calc-row" id="int-rv-row" style="display:none">
+      <span class="calc-label">Incluir recorrido virtual</span>
+      <select class="calc-select" id="int-rv" onchange="calcInt()">
+        <option value="0">No incluir</option>
+        <option value="1">Sí incluir</option>
+      </select>
+    </div>
+    <div class="results-row" id="int-results"></div>
+    <div class="calc-warn" id="int-warn"></div>
+  </div>
+
+  <button class="toggle-tbl-btn" onclick="toggleTbl('tbl-int',this)">▼ Ver tabla de precios</button>
+  <div id="tbl-int" class="collapsible-tbl">
+
+    <div class="sub-heading">Entregables</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:38%">Descripción</th><th>Detalle</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Diseño / idea conceptual</div></td><td><div class="note-txt" style="text-align:center">Moodboard, concepto rector, referencias visuales</div></td></tr>
+        <tr><td><div class="svc-name">Paleta de colores y materiales</div></td><td><div class="note-txt" style="text-align:center">Fichas técnicas y proveedores sugeridos</div></td></tr>
+        <tr><td><div class="svc-name">Asesoría de luminarias</div></td><td><div class="note-txt" style="text-align:center">Especificaciones y presupuesto orientativo</div></td></tr>
+        <tr><td><div class="svc-name">Asesoría de mobiliario</div></td><td><div class="note-txt" style="text-align:center">Layout + propuesta con opciones</div></td></tr>
+        <tr><td><div class="svc-name">Renders</div></td><td><div class="note-txt" style="text-align:center">4 renders ≤80 m² · 6 renders 80–200 m²</div></td></tr>
+        <tr><td><div class="svc-name">Recorrido virtual</div></td><td><div class="note-txt" style="text-align:center">Video 1–2 min · Com. Chico y Com. Mediano</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="sub-heading">Precios</div>
+    <div class="table-wrap">
+    <table style="min-width:580px">
+      <thead><tr>
+        <th style="width:19%">V. Vertical</th>
+        <th style="width:19%">V. Horizontal</th>
+        <th style="width:19%">Com. Chico</th>
+        <th style="width:19%">Com. Mediano</th>
+        <th style="text-align:left">Notas</th>
+      </tr></thead>
+      <tbody><tr>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$21,000</div><div class="price-note">hasta 70 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$180/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$38,000</div><div class="price-note">hasta 150 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$190/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$29,500</div><div class="price-note">hasta 70 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$200/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$62,000</div><div class="price-note">hasta 250 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$180/m²</div></td>
+        <td><div class="note-txt">Precio fijo hasta el metraje máximo. M² adicional sobre el excedente.</div></td>
+      </tr></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="footer-note">Precios en MXN sin IVA (16%). 2 rondas de revisión incluidas por entregable; rondas adicionales tienen costo. Recorrido virtual disponible solo en Com. Chico y Com. Mediano.</div>
+</div>
+
+<!-- ══ ARQUITECTÓNICO ══ -->
+<div class="filter-section" id="fs-arq">
+
+  <div class="calc-card">
+    <div class="calc-title">Calculadora — Arquitectónico</div>
+    <div class="calc-row">
+      <span class="calc-label">Tipo de proyecto</span>
+      <select class="calc-select" id="arq-tipo" onchange="onArqTipo();calcArq()">
+        <option value="vv">V. Vertical (máx. 70 m²)</option>
+        <option value="vh">V. Horizontal (máx. 150 m²)</option>
+        <option value="cc">Com. Chico (máx. 70 m²)</option>
+        <option value="cm">Com. Mediano (máx. 250 m²)</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Superficie (m²)</span>
+      <input type="number" class="calc-input" id="arq-m2" value="70" min="1" max="1000" step="0.01" oninput="calcArq()">
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">¿Incluye Proyecto de Interiores?</span>
+      <select class="calc-select" id="arq-int" onchange="calcArq()">
+        <option value="0">No</option>
+        <option value="1">Sí</option>
+      </select>
+    </div>
+    <div class="results-row" id="arq-results"></div>
+    <div class="calc-warn" id="arq-warn"></div>
+  </div>
+
+  <button class="toggle-tbl-btn" onclick="toggleTbl('tbl-arq',this)">▼ Ver tabla de precios</button>
+  <div id="tbl-arq" class="collapsible-tbl">
+
+    <div class="sub-heading">Entregables adicionales sobre Interiores</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:38%">Descripción</th><th>Detalle</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Todo el Paquete Interiores</div></td><td><div class="note-txt" style="text-align:center">Concepto, materiales, luminarias, mobiliario, renders, recorrido (Com.)</div></td></tr>
+        <tr><td><div class="svc-name">Plantas arquitectónicas</div></td><td><div class="note-txt" style="text-align:center">Planta de distribución, acabados y cotas</div></td></tr>
+        <tr><td><div class="svc-name">2 Secciones</div></td><td><div class="note-txt" style="text-align:center">Corte transversal y longitudinal</div></td></tr>
+        <tr><td><div class="svc-name">2 Alzados / vistas</div></td><td><div class="note-txt" style="text-align:center">Fachadas interiores o exteriores según aplique</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="sub-heading">Precios</div>
+    <div class="table-wrap">
+    <table style="min-width:580px">
+      <thead><tr>
+        <th style="width:19%">V. Vertical</th>
+        <th style="width:19%">V. Horizontal</th>
+        <th style="width:19%">Com. Chico</th>
+        <th style="width:19%">Com. Mediano</th>
+        <th style="text-align:left">Notas</th>
+      </tr></thead>
+      <tbody><tr>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$12,000 – $20,000</div><div class="price-note">hasta 70 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$215/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$22,000 – $36,000</div><div class="price-note">hasta 150 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$175/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$12,000 – $20,000</div><div class="price-note">hasta 70 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$215/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$32,000 – $56,000</div><div class="price-note">hasta 250 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$155/m²</div></td>
+        <td><div class="note-txt">Precio fijo hasta el metraje máximo. M² adicional sobre el excedente. Requiere Paquete Interiores.</div></td>
+      </tr></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="footer-note">Precios en MXN sin IVA. Incremento de 35–45% sobre Paquete Interiores por trabajo técnico adicional. En proyectos que requieran cédula profesional, ese factor de responsabilidad justifica el rango alto.</div>
+</div>
+
+<!-- ══ INGENIERÍAS ══ -->
+<div class="filter-section" id="fs-ing">
+
+  <div class="calc-card">
+    <div class="calc-title">Calculadora — Ingenierías</div>
+    <div class="calc-row">
+      <span class="calc-label">Escenario</span>
+      <select class="calc-select" id="ing-esc" onchange="onIngEsc();calcIng()">
+        <option value="A">A — Proyecto sencillo, hecho por ustedes</option>
+        <option value="B">B — Especialista subcontratado</option>
+      </select>
+    </div>
+    <div class="calc-row" id="ing-tipo-row">
+      <span class="calc-label">Tipo de proyecto</span>
+      <select class="calc-select" id="ing-tipo" onchange="onIngTipo();calcIng()">
+        <option value="cc">Com. Chico (máx. 70 m²)</option>
+        <option value="cm">Com. Mediano (máx. 200 m²)</option>
+        <option value="res">Residencial (máx. 200 m²)</option>
+      </select>
+    </div>
+    <div class="calc-row" id="ing-m2-row">
+      <span class="calc-label">Superficie (m²)</span>
+      <input type="number" class="calc-input" id="ing-m2" value="70" min="1" max="1000" step="0.01" oninput="calcIng()">
+    </div>
+    <div class="calc-row" id="ing-mk-row" style="display:none">
+      <span class="calc-label">Markup de coordinación (%)</span>
+      <input type="number" class="calc-input" id="ing-mk" value="25" min="20" max="30" oninput="calcIng()">
+    </div>
+    <div class="results-row" id="ing-results"></div>
+    <div class="calc-warn" id="ing-warn"></div>
+  </div>
+
+  <button class="toggle-tbl-btn" onclick="toggleTbl('tbl-ing',this)">▼ Ver tabla de precios</button>
+  <div id="tbl-ing" class="collapsible-tbl">
+
+    <div class="sub-heading">Entregables</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:38%">Descripción</th><th>Detalle</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Planos de instalaciones</div></td><td><div class="note-txt" style="text-align:center">Hidráulica, sanitaria, eléctrica (iluminación + contactos)</div></td></tr>
+        <tr><td><div class="svc-name">Señalización y rutas</div></td><td><div class="note-txt" style="text-align:center">Recorridos, salidas de emergencia, rutas de evacuación</div></td></tr>
+        <tr><td><div class="svc-name">Memoria de instalaciones</div></td><td><div class="note-txt" style="text-align:center">Descripción técnica de los sistemas propuestos</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="sub-heading">Escenario A — Proyecto sencillo, hecho por ustedes</div>
+    <div class="sub-note">Señalización de recorridos, salidas de emergencia y rutas de evacuación. Sin cálculo especializado.</div>
+    <div class="table-wrap">
+    <table style="min-width:500px">
+      <thead><tr>
+        <th style="width:25%">Com. Chico</th>
+        <th style="width:25%">Com. Mediano</th>
+        <th style="width:25%">Residencial</th>
+        <th style="text-align:left">Notas</th>
+      </tr></thead>
+      <tbody><tr>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$4,500 – $7,000</div><div class="price-note">hasta 70 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$65/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$6,500 – $10,000</div><div class="price-note">hasta 200 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$50/m²</div></td>
+        <td><div class="price-type">Precio fijo</div><div class="price-main">$8,000 – $13,000</div><div class="price-note">hasta 200 m²</div><div class="price-type">M² adicional</div><div class="price-main">+$50/m²</div></td>
+        <td><div class="note-txt">Solo señalización. Si firmas con cédula asumes responsabilidad legal. Requiere Paquete Arquitectónico previo.</div></td>
+      </tr></tbody>
+    </table>
+    </div>
+
+    <div class="sub-heading">Escenario B — Proyecto completo con especialista subcontratado</div>
+    <div class="sub-note">Instalaciones hidráulicas, sanitarias y eléctricas completas. El ingeniero firma; tú coordinas y agregas markup.</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:45%;text-align:left">Concepto</th><th style="width:25%">Responsable</th><th>Rango estimado</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Honorario del especialista</div></td><td><div class="note-txt" style="text-align:center">Ingeniero subcontratado</div></td><td><div class="price-main">$12,000 – $22,000</div></td></tr>
+        <tr><td><div class="svc-name">Markup de coordinación (20–30%)</div></td><td><div class="note-txt" style="text-align:center">Tu despacho</div></td><td><div class="price-main">$2,400 – $6,600</div></td></tr>
+        <tr><td><div class="svc-name">Total cobrado al cliente</div></td><td></td><td><div class="price-main">$14,400 – $28,600</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="footer-note">Precios en MXN sin IVA. Escenario A: delimita el alcance en contrato — si firmas con cédula, asumes responsabilidad legal. Escenario B: el ingeniero debe emitir CFDI por lo que le pagas; eso es tu deducible y protección fiscal.</div>
+</div>
+
+<!-- ══ EXTRAS ══ -->
+<div class="filter-section" id="fs-ext">
+
+  <div class="calc-card">
+    <div class="calc-title">Calculadora — Extras</div>
+    <div class="calc-row">
+      <span class="calc-label">Tipo de extra</span>
+      <select class="calc-select" id="ext-cat" onchange="onExtCat();calcExt()">
+        <option value="render">Render adicional</option>
+        <option value="rv">Recorrido virtual (extra)</option>
+      </select>
+    </div>
+    <div class="calc-row" id="ext-render-row">
+      <span class="calc-label">Tipo de render</span>
+      <select class="calc-select" id="ext-render-tipo" onchange="calcExt()">
+        <option value="1200,2500">Interior estático — ambiente completo</option>
+        <option value="800,1500">Detalle específico — closet, cocina, baño</option>
+        <option value="1500,3000">Exterior / fachada</option>
+        <option value="1800,3500">Vista aérea / axonométrica</option>
+      </select>
+    </div>
+    <div class="calc-row" id="ext-qty-row">
+      <span class="calc-label">Cantidad</span>
+      <input type="number" class="calc-input" id="ext-qty" value="1" min="1" max="20" oninput="calcExt()">
+    </div>
+    <div class="calc-row" id="ext-rv-tipo-row" style="display:none">
+      <span class="calc-label">Extra de recorrido</span>
+      <select class="calc-select" id="ext-rv-tipo" onchange="calcExt()">
+        <option value="2500,4000">Extensión de duración (+1 min adicional)</option>
+        <option value="2000,3500">Segunda versión / recorrido alternativo</option>
+        <option value="800,1500">Música con licencia + edición de audio</option>
+        <option value="1000,2000">Títulos, textos animados o branding</option>
+        <option value="500,1000">Exportación adicional (vertical, 4K)</option>
+        <option value="6000,12000">Recorrido interactivo 360° (visor web)</option>
+        <option value="800,1500">Ronda adicional de revisiones</option>
+      </select>
+    </div>
+    <div class="results-row" id="ext-results"></div>
+  </div>
+
+  <button class="toggle-tbl-btn" onclick="toggleTbl('tbl-ext',this)">▼ Ver tabla de precios</button>
+  <div id="tbl-ext" class="collapsible-tbl">
+
+    <div class="sub-heading">Renders adicionales — por pieza, sin IVA</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:60%;text-align:left">Tipo de render</th><th>Rango por pieza</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Interior estático</div><div class="svc-sub">Ambiente completo</div></td><td><div class="price-main">$1,200 – $2,500</div></td></tr>
+        <tr><td><div class="svc-name">Detalle específico</div><div class="svc-sub">Closet, cocina, baño</div></td><td><div class="price-main">$800 – $1,500</div></td></tr>
+        <tr><td><div class="svc-name">Exterior / fachada</div></td><td><div class="price-main">$1,500 – $3,000</div></td></tr>
+        <tr><td><div class="svc-name">Vista aérea / axonométrica</div></td><td><div class="price-main">$1,800 – $3,500</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="sub-heading">Recorrido virtual — extras</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:60%;text-align:left">Extra</th><th>Rango</th></tr></thead>
+      <tbody>
+        <tr><td><div class="svc-name">Extensión de duración (+1 min adicional)</div></td><td><div class="price-main">$2,500 – $4,000</div></td></tr>
+        <tr><td><div class="svc-name">Segunda versión / recorrido alternativo</div></td><td><div class="price-main">$2,000 – $3,500</div></td></tr>
+        <tr><td><div class="svc-name">Música con licencia + edición de audio</div></td><td><div class="price-main">$800 – $1,500</div></td></tr>
+        <tr><td><div class="svc-name">Títulos, textos animados o branding</div></td><td><div class="price-main">$1,000 – $2,000</div></td></tr>
+        <tr><td><div class="svc-name">Exportación en formato adicional</div><div class="svc-sub">Vertical para redes, 4K</div></td><td><div class="price-main">$500 – $1,000</div></td></tr>
+        <tr><td><div class="svc-name">Recorrido interactivo 360° (visor web)</div></td><td><div class="price-main">$6,000 – $12,000</div></td></tr>
+        <tr><td><div class="svc-name">Ronda adicional de revisiones</div><div class="svc-sub">Renders o video</div></td><td><div class="price-main">$800 – $1,500</div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="footer-note">Precios en MXN sin IVA. El recorrido virtual se produce siempre sobre renders aprobados — especificarlo en contrato evita el conflicto más frecuente. Límite estándar: 2 rondas de revisión por entregable.</div>
+</div>
+
+<div class="footer-note" style="margin-top:3rem">
+  Precios en MXN antes de IVA (16%). Rangos establecidos para Ciudad de México, 2026. RESICO: facturar con CFDI 4.0 por cada pago recibido. Estructura de cobro recomendada: 40% anticipo · 40% a mitad de proyecto · 20% al entregar. Actualizar precios al menos cada seis meses.
+</div>
+
+</div>
+
+<script>
+var IVA=1.16;
+function fmt(n){return'$'+Math.round(n).toLocaleString('es-MX');}
+function fmtR(a,b){return fmt(a)+' \u2013 '+fmt(b);}
+function rc(lbl,val,hi){
+  return'<div class="res-card"><div class="res-label">'+lbl+'</div>'+
+    '<div class="res-value'+(hi?' highlight':'')+'">'+(typeof val==='number'?fmt(val):val)+'</div></div>';
+}
+
+var INT={
+  vv:{fix:21000,lim:70,xtra:180,rng:2000},
+  vh:{fix:38000,lim:150,xtra:190,rng:3500},
+  cc:{fix:29500,lim:70,xtra:200,rng:2500},
+  cm:{fix:62000,lim:250,xtra:180,rng:5000}
+};
+var RV_MID={cc:5750,cm:5750};
+var ARQ={
+  vv:{lo:12000,hi:20000,lim:70,xtra:215},
+  vh:{lo:22000,hi:36000,lim:150,xtra:175},
+  cc:{lo:12000,hi:20000,lim:70,xtra:215},
+  cm:{lo:32000,hi:56000,lim:250,xtra:155}
+};
+var P3A={
+  cc:{lo:4500,hi:7000,lim:70,xtra:65},
+  cm:{lo:6500,hi:10000,lim:200,xtra:50},
+  res:{lo:8000,hi:13000,lim:200,xtra:50}
+};
+var LIMS={vv:70,vh:150,cc:70,cm:250};
+var LIMS_ING={cc:70,cm:200,res:200};
+
+function toggleTbl(id,btn){
+  var el=document.getElementById(id);
+  var open=el.classList.toggle('open');
+  btn.textContent=(open?'▲ Ocultar':'▼ Ver')+' tabla de precios';
+}
+
+function onIntTipo(){
+  var t=document.getElementById('int-tipo').value;
+  document.getElementById('int-m2').value=LIMS[t];
+  var rv=document.getElementById('int-rv-row');
+  rv.style.display=(t==='cc'||t==='cm')?'flex':'none';
+  if(t!=='cc'&&t!=='cm') document.getElementById('int-rv').value='0';
+}
+
+function calcInt(){
+  var t=document.getElementById('int-tipo').value;
+  var m2=parseFloat(document.getElementById('int-m2').value)||0;
+  var rv=document.getElementById('int-rv').value==='1'&&(t==='cc'||t==='cm');
+  var d=INT[t];
+  var xtra=m2>d.lim?Math.round((m2-d.lim)*d.xtra):0;
+  var mid=d.fix+xtra;
+  var lo=Math.round(mid-d.rng/2);
+  var hi=Math.round(mid+d.rng/2);
+  if(rv){lo+=RV_MID[t]||0;hi+=RV_MID[t]||0;}
+  document.getElementById('int-results').innerHTML=
+    rc('Rango subtotal (sin IVA)',fmtR(lo,hi))+
+    rc('Rango con IVA',fmtR(Math.round(lo*IVA),Math.round(hi*IVA)),true);
+  document.getElementById('int-warn').textContent='';
+}
+
+function onArqTipo(){
+  document.getElementById('arq-m2').value=LIMS[document.getElementById('arq-tipo').value];
+}
+
+function calcArq(){
+  var t=document.getElementById('arq-tipo').value;
+  var m2=parseFloat(document.getElementById('arq-m2').value)||0;
+  var inclInt=document.getElementById('arq-int').value==='1';
+  var d=ARQ[t];
+  var xtra=m2>d.lim?Math.round((m2-d.lim)*d.xtra):0;
+  var arqLo=d.lo+xtra,arqHi=d.hi+xtra;
+  if(!inclInt){
+    document.getElementById('arq-results').innerHTML=
+      rc('Rango Arquitectónico (sin IVA)',fmtR(arqLo,arqHi))+
+      rc('Rango con IVA',fmtR(Math.round(arqLo*IVA),Math.round(arqHi*IVA)),true);
+  } else {
+    var di=INT[t];
+    var xi=m2>di.lim?Math.round((m2-di.lim)*di.xtra):0;
+    var iMid=di.fix+xi;
+    var iLo=Math.round(iMid-di.rng/2);
+    var iHi=Math.round(iMid+di.rng/2);
+    var totLo=arqLo+iLo,totHi=arqHi+iHi;
+    document.getElementById('arq-results').innerHTML=
+      rc('Rango Arquitectónico (sin IVA)',fmtR(arqLo,arqHi))+
+      rc('Rango Interiores (sin IVA)',fmtR(iLo,iHi))+
+      rc('Suma (sin IVA)',fmtR(totLo,totHi))+
+      rc('Suma con IVA',fmtR(Math.round(totLo*IVA),Math.round(totHi*IVA)),true);
+  }
+  document.getElementById('arq-warn').textContent='';
+}
+
+function onIngTipo(){
+  document.getElementById('ing-m2').value=LIMS_ING[document.getElementById('ing-tipo').value];
+}
+
+function onIngEsc(){
+  var esc=document.getElementById('ing-esc').value;
+  document.getElementById('ing-tipo-row').style.display=esc==='B'?'none':'flex';
+  document.getElementById('ing-m2-row').style.display=esc==='B'?'none':'flex';
+  document.getElementById('ing-mk-row').style.display=esc==='B'?'flex':'none';
+}
+
+function calcIng(){
+  var esc=document.getElementById('ing-esc').value;
+  var out=document.getElementById('ing-results');
+  if(esc==='B'){
+    var mk=Math.min(30,Math.max(20,parseFloat(document.getElementById('ing-mk').value)||25));
+    var espLo=12000,espHi=22000;
+    var mkLo=Math.round(espLo*mk/100),mkHi=Math.round(espHi*mk/100);
+    var tLo=espLo+mkLo,tHi=espHi+mkHi;
+    out.innerHTML=
+      rc('Honorario especialista',fmtR(espLo,espHi))+
+      rc('Tu markup ('+mk+'%)',fmtR(mkLo,mkHi))+
+      rc('Rango subtotal (sin IVA)',fmtR(tLo,tHi))+
+      rc('Rango con IVA',fmtR(Math.round(tLo*IVA),Math.round(tHi*IVA)),true);
+  } else {
+    var t=document.getElementById('ing-tipo').value;
+    var m2=parseFloat(document.getElementById('ing-m2').value)||0;
+    var d=P3A[t];
+    var xtra=m2>d.lim?Math.round((m2-d.lim)*d.xtra):0;
+    var lo=d.lo+xtra,hi=d.hi+xtra;
+    out.innerHTML=
+      rc('Rango subtotal (sin IVA)',fmtR(lo,hi))+
+      rc('Rango con IVA',fmtR(Math.round(lo*IVA),Math.round(hi*IVA)),true);
+  }
+  document.getElementById('ing-warn').textContent='';
+}
+
+function onExtCat(){
+  var cat=document.getElementById('ext-cat').value;
+  document.getElementById('ext-render-row').style.display=cat==='render'?'flex':'none';
+  document.getElementById('ext-qty-row').style.display=cat==='render'?'flex':'none';
+  document.getElementById('ext-rv-tipo-row').style.display=cat==='rv'?'flex':'none';
+}
+
+function calcExt(){
+  var cat=document.getElementById('ext-cat').value;
+  var out=document.getElementById('ext-results');
+  if(cat==='render'){
+    var v=document.getElementById('ext-render-tipo').value.split(',');
+    var lo=parseInt(v[0]),hi=parseInt(v[1]);
+    var qty=parseInt(document.getElementById('ext-qty').value)||1;
+    var tLo=lo*qty,tHi=hi*qty;
+    out.innerHTML=
+      rc('Por pieza (sin IVA)',fmtR(lo,hi))+
+      rc('Rango subtotal ('+qty+' pza)',fmtR(tLo,tHi))+
+      rc('Rango con IVA',fmtR(Math.round(tLo*IVA),Math.round(tHi*IVA)),true);
+  } else {
+    var v2=document.getElementById('ext-rv-tipo').value.split(',');
+    var lo2=parseInt(v2[0]),hi2=parseInt(v2[1]);
+    out.innerHTML=
+      rc('Rango subtotal (sin IVA)',fmtR(lo2,hi2))+
+      rc('Rango con IVA',fmtR(Math.round(lo2*IVA),Math.round(hi2*IVA)),true);
+  }
+}
+
+// Filtros
+document.querySelectorAll('.filter-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.filter-section').forEach(function(s){s.classList.remove('active');});
+    this.classList.add('active');
+    document.getElementById('fs-'+this.dataset.fs).classList.add('active');
+  });
+});
+
+// Tema
+function applyTheme(dark){
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  document.getElementById('icon-sun').style.display=dark?'none':'block';
+  document.getElementById('icon-moon').style.display=dark?'block':'none';
+}
+var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(prefersDark);
+var isDark=prefersDark;
+document.getElementById('theme-btn').addEventListener('click',function(){isDark=!isDark;applyTheme(isDark);});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){isDark=e.matches;applyTheme(isDark);});
+
+// Init
+onIntTipo();calcInt();onArqTipo();calcArq();onIngEsc();onIngTipo();calcIng();onExtCat();calcExt();
+</script>
+</body>
+</html>
